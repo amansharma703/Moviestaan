@@ -1,24 +1,22 @@
-import { Button, createTheme, Tab, Tabs, TextField, ThemeProvider } from '@material-ui/core';
-import './Search.css';
-import axios from 'axios';
-import { useEffect, useState } from 'react';
-import Genres from '../../Genres/Genres';
-import SingleContent from '../../SingleContent/SingleContent';
-import CustomPagination from '../../Pagination/CustomPagination';
-import SearchIcon from '@material-ui/icons/Search';
+import { Button, createTheme, Tab, Tabs, TextField, ThemeProvider } from "@material-ui/core";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import SingleContent from "../../SingleContent/SingleContent";
+import CustomPagination from "../../Pagination/CustomPagination";
+import SearchIcon from "@material-ui/icons/Search";
 
 const Search = () => {
     const [type, setType] = useState(0);
-    const [searchText, setSearchText] = useState('');
+    const [searchText, setSearchText] = useState("");
     const [page, setPage] = useState(1);
     const [content, setContent] = useState([]);
     const [numOfPages, setNumOfPages] = useState();
 
     const darkTheme = createTheme({
         palette: {
-            type: 'dark',
+            type: "dark",
             primary: {
-                main: '#fff',
+                main: "#fff",
             },
         },
     });
@@ -26,13 +24,12 @@ const Search = () => {
     const fetchSearch = async () => {
         try {
             const { data } = await axios.get(
-                `https://api.themoviedb.org/3/search/${type ? 'tv' : 'movie'}?api_key=${
-                    process.env.REACT_APP_API_KEY
-                }&language=en-US&query=${searchText}&page=${page}&include_adult=false`
+                `https://api.themoviedb.org/3/search/${type ? "tv" : "movie"}?api_key=${process.env.REACT_APP_API_KEY}&language=en-US&query=${
+                    searchText ? searchText : "avenger"
+                }&page=${page}&include_adult=false`
             );
             setContent(data.results);
             setNumOfPages(data.total_pages);
-            console.log(data);
         } catch (error) {
             console.error(error);
         }
@@ -47,7 +44,7 @@ const Search = () => {
     return (
         <div>
             <ThemeProvider theme={darkTheme}>
-                <div className='search'>
+                <div style={{ display: "flex", margin: "15px 0" }}>
                     <TextField
                         style={{ flex: 1 }}
                         className='searchBox'
@@ -70,30 +67,26 @@ const Search = () => {
                     style={{ paddingBottom: 5 }}
                     aria-label='disabled tabs example'
                 >
-                    <Tab style={{ width: '50%' }} label='Search Movies' />
-                    <Tab style={{ width: '50%' }} label='Search TV Series' />
+                    <Tab style={{ width: "50%" }} label='Search Movies' />
+                    <Tab style={{ width: "50%" }} label='Search TV Series' />
                 </Tabs>
             </ThemeProvider>
             <div className='trending'>
-                {content &&
-                    content.map((c) => (
-                        <SingleContent
-                            key={c.id}
-                            id={c.id}
-                            poster={c.poster_path}
-                            title={c.title || c.name}
-                            date={c.first_air_date || c.release_date}
-                            media_type={type ? 'tv' : 'movie'}
-                            vote_average={c.vote_average}
-                        />
-                    ))}
-                {searchText && !content.length && (type ? <h2>No Series Found</h2> : <h2>No Movies Found</h2>)}
-                {/* {console.log(searchText && !content && (type ? <h2>No Series Found</h2> : <h2>No Movies Found</h2>))} */}
-                {console.log(searchText)}
-                {console.log(content)}
-                {console.log(searchText && !content.length)}
+                {console.log(content === false)}
 
-                {/* {type ? <h2>No Series Found</h2> : <h2>No Movies Found</h2>} */}
+                {content.length
+                    ? content.map((c) => (
+                          <SingleContent
+                              key={c.id}
+                              id={c.id}
+                              poster={c.poster_path}
+                              title={c.title || c.name}
+                              date={c.first_air_date || c.release_date}
+                              media_type={type ? "tv" : "movie"}
+                              vote_average={c.vote_average}
+                          />
+                      ))
+                    : searchText && (type ? <h2>No Series Found</h2> : <h2>No Movies Found</h2>)}
             </div>
             {numOfPages > 1 && <CustomPagination setPage={setPage} numOfPages={numOfPages} />}
         </div>

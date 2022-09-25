@@ -1,9 +1,9 @@
-import axios from 'axios';
-import { useEffect, useState } from 'react';
-import Genres from '../../Genres/Genres';
-import SingleContent from '../../SingleContent/SingleContent';
-import useGenre from '../../../Hooks/UseGenre';
-import CustomPagination from '../../Pagination/CustomPagination';
+import axios from "axios";
+import { useEffect, useState } from "react";
+import Genres from "../../Genres/Genres";
+import SingleContent from "../../SingleContent/SingleContent";
+import useGenre from "../../../Hooks/UseGenre";
+import CustomPagination from "../../Pagination/CustomPagination";
 
 const Movies = () => {
     const [genres, setGenres] = useState([]);
@@ -12,7 +12,6 @@ const Movies = () => {
     const [content, setContent] = useState([]);
     const [numOfPages, setNumOfPages] = useState();
     const genreforURL = useGenre(selectedGenres);
-    // console.log(selectedGenres);
 
     const fetchMovies = async () => {
         const { data } = await axios.get(

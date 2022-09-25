@@ -5,11 +5,11 @@
   display: flex;
   justify-content: center;
   text-transform: uppercase;
-  background-color: #39445a;
+  background-color: #05051a;
   font-family: "Montserrat", sans-serif;
-  font-size: 5vw;
+  font-size: 4vw;
   padding-bottom: 15px;
-  box-shadow: 0px 1px 5px black;
+  box-shadow: 0px 1px 5px #515157;
   color: white;
   z-index: 100;
 }
@@ -17,6 +17,6 @@
 @media (max-width: 1000px) {
   .header {
     padding-top: 15px;
-    font-size: 6.4vw;
+    font-size: 5vw;
   }
 }
